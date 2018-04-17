@@ -68,9 +68,10 @@ export default {
       currentPage: 1,
       pagesize: 10,
       loading: true,
-      url: "123",
+      url: "url",
       tableData: [
         {
+          id: "12987122",
           date: "2016-05-05",
           name: "王小虎1",
           province: "上海",
@@ -79,6 +80,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987123",
           date: "2016-05-07",
           name: "王小虎2",
           province: "上海",
@@ -87,6 +89,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987132",
           date: "2016-05-08",
           name: "王小虎3",
           province: "上海",
@@ -95,6 +98,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12982122",
           date: "2016-05-01",
           name: "王小虎4",
           province: "上海",
@@ -103,6 +107,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987172",
           date: "2016-05-02",
           name: "王小虎5",
           province: "上海",
@@ -111,6 +116,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987422",
           date: "2016-05-03",
           name: "王小虎6",
           province: "上海",
@@ -119,6 +125,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987100",
           date: "2016-05-04",
           name: "王小虎7",
           province: "上海",
@@ -127,6 +134,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987892",
           date: "2016-05-06",
           name: "王小虎8",
           province: "上海",
@@ -135,6 +143,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12998122",
           date: "2016-05-09",
           name: "王小虎9",
           province: "上海",
@@ -143,6 +152,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12985522",
           date: "2016-05-10",
           name: "王小虎10",
           province: "上海",
@@ -151,6 +161,7 @@ export default {
           zip: 200333
         },
         {
+          id: "12987452",
           date: "2016-05-11",
           name: "王小虎11",
           province: "上海",
@@ -175,11 +186,12 @@ export default {
       })
         .then(() => {
           // 向请求服务端删除
-          var resource = this.$resource(this.url + "{/name}");
+          var resource = this.$resource(this.url + "{/id}");
           resource
-            .delete({ name: user.name })
+            .delete({ id: row.id })
             .then(response => {
-              this.$message.success("成功删除了用户" + user.name + "!");
+              this.$message.success("成功删除了用户" + row.name + "!");
+              this.tableData.splice(index, 1);
             })
             .catch(response => {
               this.$message.error("删除失败!");
