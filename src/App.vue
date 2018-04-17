@@ -10,7 +10,7 @@
               <template slot="title"><i class="el-icon-message"></i>导航一</template>
               <el-menu-item-group>
                 <template slot="title">分组一</template>
-                <el-menu-item index="1-1">选项1</el-menu-item>
+                <el-menu-item index="1-1">table</el-menu-item>
                 <el-menu-item index="1-2">选项2</el-menu-item>
               </el-menu-item-group>
               <el-menu-item-group title="分组2">
@@ -56,7 +56,10 @@
         <!-- 左侧菜单 - end -->
         <!-- 右侧主题 - start -->
         <el-container>
-          <el-main></el-main>
+          <el-main>
+              <Table></Table>
+              <Table2 class="mt20"></Table2>
+          </el-main>
         </el-container>
         <!-- 右侧主题 - end -->
       </el-container>
@@ -65,9 +68,15 @@
 </template>
 
 <script>
+import Table from "./components/Table";
+import Table2 from "./components/Table2";
+
 export default {
   name: "App",
-  components: {}
+  components: {
+    Table,
+    Table2
+  }
 };
 </script>
 
@@ -75,6 +84,9 @@ export default {
 body {
   padding: 0;
   margin: 0;
+}
+.mt20 {
+  margin-top: 20px;
 }
 .el-header {
   background-color: #b3c0d1;
