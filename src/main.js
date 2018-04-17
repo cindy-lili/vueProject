@@ -4,11 +4,13 @@ import Vue from 'vue'
 import ElementUI from 'element-ui';
 import 'element-ui/lib/theme-chalk/index.css';
 import App from './App'
+import vueResource from 'vue-resource'
 
 import Table from './components/table.vue'
 import Table2 from './components/table2.vue'
 
 Vue.use(ElementUI, { size: 'small' });
+Vue.use(vueResource);
 
 /* eslint-disable no-new */
 new Vue({

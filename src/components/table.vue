@@ -67,6 +67,8 @@ export default {
     return {
       currentPage: 1,
       pagesize: 10,
+      loading: true,
+      url: "123",
       tableData: [
         {
           date: "2016-05-05",
@@ -173,12 +175,11 @@ export default {
       })
         .then(() => {
           // 向请求服务端删除
-          var resource = this.$resource(this.url + "{/id}");
+          var resource = this.$resource(this.url + "{/name}");
           resource
-            .delete({ id: user.id })
+            .delete({ name: user.name })
             .then(response => {
-              this.$message.success("成功删除了用户" + user.username + "!");
-              this.getUsers();
+              this.$message.success("成功删除了用户" + user.name + "!");
             })
             .catch(response => {
               this.$message.error("删除失败!");
