@@ -2,9 +2,13 @@
 <div>
   <el-input placeholder="姓名" style="width:200px;"></el-input>
   <el-button type="primary">搜索</el-button>
-  <el-table class="mt20" ref="multipleTable" tooltip-effect="dark" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)">
-    <el-table-column type="index" prop="id" label="序号" align="center" :index="typeIndex"></el-table-column>
+  <div class="mt20">
+    <el-button type="success" icon="el-icon-plus">添加用户</el-button>
+    <el-button type="danger" icon="el-icon-delete" :disabled="selected.length==0">批量删除</el-button>
+  </div>
+  <el-table ref="multipleTable" class="mt20" tooltip-effect="dark" @selection-change="selectedChange" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)">
     <el-table-column type="selection" width="55"></el-table-column>
+    <el-table-column type="index" prop="id" label="序号" align="center" :index="typeIndex"></el-table-column>
     <el-table-column prop="date" label="日期">
       <template slot-scope="scope">
         <i class="el-icon-time"></i>
@@ -46,20 +50,6 @@
 </div>
 </template>
 
-<style>
-.el-table .warning-row {
-  background: oldlace;
-}
-
-.el-table .success-row {
-  background: #f0f9eb;
-}
-
-.align-center {
-  text-align: center;
-}
-</style>
-
 <script>
 export default {
   name: "Table",
@@ -68,116 +58,31 @@ export default {
       currentPage: 1,
       pagesize: 10,
       loading: true,
-      url: "url",
-      tableData: [
-        {
-          id: "12987122",
-          date: "2016-05-05",
-          name: "王小虎1",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987123",
-          date: "2016-05-07",
-          name: "王小虎2",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987132",
-          date: "2016-05-08",
-          name: "王小虎3",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12982122",
-          date: "2016-05-01",
-          name: "王小虎4",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987172",
-          date: "2016-05-02",
-          name: "王小虎5",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987422",
-          date: "2016-05-03",
-          name: "王小虎6",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987100",
-          date: "2016-05-04",
-          name: "王小虎7",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987892",
-          date: "2016-05-06",
-          name: "王小虎8",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12998122",
-          date: "2016-05-09",
-          name: "王小虎9",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12985522",
-          date: "2016-05-10",
-          name: "王小虎10",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        },
-        {
-          id: "12987452",
-          date: "2016-05-11",
-          name: "王小虎11",
-          province: "上海",
-          city: "普陀区",
-          address: "上海市普陀区金沙江路 1518 弄",
-          zip: 200333
-        }
-      ]
+      selected: [], //已选中
+      url: "http://60.205.231.165:8777/b35dcc1fd21acdc789fc/testone/name",
+      tableData: []
     };
   },
+  mounted: function() {
+    this.getTable();
+  },
   methods: {
-    handleSelectionChange(val) {
-      this.multipleSelection = val;
+    selectedChange(val) {
+      this.selected = val;
     },
     handleEdit(index, row) {
       console.log(row);
+    },
+    // 获取table
+    getTable: function() {
+      this.$http
+        .get(this.url)
+        .then(response => {
+          this.tableData = response.data;
+        })
+        .catch(error => {
+          this.$message.error(error);
+        });
     },
     //删除当前行
     handleDelete(index, row) {
@@ -186,7 +91,10 @@ export default {
       })
         .then(() => {
           // 向请求服务端删除
-          var resource = this.$resource(this.url + "{/id}");
+          var resource = this.$resource(
+            "http://60.205.231.165:8777/b35dcc1fd21acdc789fc/deleteItem" +
+              "{?id}"
+          );
           resource
             .delete({ id: row.id })
             .then(response => {
@@ -201,6 +109,8 @@ export default {
           this.$message.info("已取消操作!");
         });
     },
+    //批量删除
+    // s
     //序号
     typeIndex(index) {
       return index + (this.currentPage - 1) * 10 + 1;
@@ -214,3 +124,17 @@ export default {
   }
 };
 </script>
+
+<style>
+.el-table .warning-row {
+  background: oldlace;
+}
+
+.el-table .success-row {
+  background: #f0f9eb;
+}
+
+.align-center {
+  text-align: center;
+}
+</style>
