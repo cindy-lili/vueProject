@@ -4,7 +4,7 @@
   <el-button type="primary">搜索</el-button>
   <div class="mt20">
     <el-button type="success" icon="el-icon-plus">添加用户</el-button>
-    <el-button type="danger" icon="el-icon-delete" :disabled="selected.length==0">批量删除</el-button>
+    <el-button type="danger" icon="el-icon-delete" :disabled="selected.length == 0">批量删除</el-button>
   </div>
   <el-table ref="multipleTable" class="mt20" tooltip-effect="dark" @selection-change="selectedChange" :data="tableData.slice((currentPage-1)*pagesize,currentPage*pagesize)">
     <el-table-column type="selection" width="55"></el-table-column>
@@ -58,9 +58,9 @@ export default {
       currentPage: 1,
       pagesize: 10,
       loading: true,
-      selected: [], //已选中
       url: "http://60.205.231.165:8777/b35dcc1fd21acdc789fc/testone/name",
-      tableData: []
+      tableData: [],
+      selected: [] //已选择项
     };
   },
   mounted: function() {
@@ -69,6 +69,7 @@ export default {
   methods: {
     selectedChange(val) {
       this.selected = val;
+      console.log(this.selected.length);
     },
     handleEdit(index, row) {
       console.log(row);
